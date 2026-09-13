@@ -13,10 +13,16 @@ library(tidyr)
 library(reshape2)
 library(fpp2)
 library(patchwork)
+library(readxl)
+library(openxlsx)
 
-# Data sets
-setwd("D:/Mahin and Amrin Papers/Paper Mam/2. Clean Data")
-D1 = read.csv("Mymensingh_MTS_Data.csv")
+# ---- Load Data ----
+# Reads the shared dataset (S1_Dataset.xlsx) and extracts the Mymensingh block.
+# Run this script from the repository root so the relative path below resolves.
+source("load_station_data.R")
+
+data_file = "S1_Dataset.xlsx"
+D1 = load_station_data(data_file, "Mymensingh")
 
 # Time Series Data
 ts1 = ts(D1$MT, frequency = 12, start = c(1985, 1))
