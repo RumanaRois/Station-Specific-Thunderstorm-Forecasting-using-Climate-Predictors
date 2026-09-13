@@ -12,10 +12,16 @@ library(lubridate)
 library(tidyr)
 library(reshape2)
 library(fpp2)
+library(readxl)
+library(openxlsx)
 
-# Data sets
-setwd("D:/Mahin and Amrin Papers/Paper Mam/2. Clean Data")
-D1 = read.csv("Sylhet_MTS_Data.csv")
+# ---- Load Data ----
+# Reads the shared dataset (S1_Dataset.xlsx) and extracts the Sylhet block.
+# Run this script from the repository root so the relative path below resolves.
+source("load_station_data.R")
+
+data_file = "S1_Dataset.xlsx"
+D1 = load_station_data(data_file, "Sylhet")
 
 # Time Series Data
 ts1 = ts(D1$MT, frequency = 12, start = c(1985, 1))
@@ -229,21 +235,17 @@ F_XGB = ts(F_XGB, frequency = 12, start = c(2017,1))
 # Environment Set up
 library(reticulate)
 
-# Install TensorFlow (and Keras, which comes bundled)
-conda_install(
-  envname = "keras-tf",
-  packages = c("tensorflow", "keras"),
-  pip = TRUE,
-  conda = "C:/Users/My Hp/Anaconda/Scripts/conda.exe"
-)
+# One-time setup (uncomment if TensorFlow/Keras are not yet installed
+# in your active conda environment):
+# reticulate::install_miniconda()
+# reticulate::conda_create("keras-tf")
+# reticulate::conda_install("keras-tf", packages = c("tensorflow", "keras"), pip = TRUE)
 
-# Test TensorFlow
-library(reticulate)
-use_condaenv("keras-tf", conda = "C:/Users/My Hp/Anaconda/Scripts/conda.exe", required = TRUE)
+use_condaenv("keras-tf", required = TRUE)
 
 library(tensorflow)
 library(keras3)
-tf$constant("Hello, TensorFlow!")
+# tf$constant("Hello, TensorFlow!")  # sanity check
 
 # Set Up Data
 prepare_data = function(d, n_steps){
