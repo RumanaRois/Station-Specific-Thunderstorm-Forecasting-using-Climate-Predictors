@@ -1,5 +1,8 @@
-setwd("D:/Mahin and Amrin Papers/Paper Mam/2. Clean Data")
-create_station_plots <- function(file, station_name){
+# Reads the shared dataset (S1_Dataset.xlsx). Run this script from the
+# repository root so the relative paths below resolve.
+source("load_station_data.R")
+
+create_station_plots <- function(data_file, station_name){
   
   library(ggplot2)
   library(dplyr)
@@ -10,7 +13,7 @@ create_station_plots <- function(file, station_name){
   library(tidyr)
   
   # Load data
-  df <- read.csv(file)
+  df <- load_station_data(data_file, station_name)
   
   # Preprocess
   df <- df %>%
@@ -123,9 +126,11 @@ create_station_plots <- function(file, station_name){
   return(list(p1,p2,p3))
 }
 
-sylhet <- create_station_plots("Sylhet_MTS_Data.csv","Sylhet")
-sreemangal <- create_station_plots("Sreemangal_MTS_Data.csv","Sreemangal")
-mymensingh <- create_station_plots("Mymensingh_MTS_Data.csv","Mymensingh")
+data_file <- "S1_Dataset.xlsx"
+
+sylhet <- create_station_plots(data_file, "Sylhet")
+sreemangal <- create_station_plots(data_file, "Sreemangal")
+mymensingh <- create_station_plots(data_file, "Mymensingh")
 
 library(patchwork)
 
