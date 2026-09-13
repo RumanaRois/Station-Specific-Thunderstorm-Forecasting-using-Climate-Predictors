@@ -15,9 +15,13 @@ library(fpp2)
 library(readxl)
 library(openxlsx)
 
-# Data sets
-setwd("D:/Mahin and Amrin Papers/Paper Mam/2. Clean Data")
-D1 = read.csv("Sreemangal_MTS_Data.csv")
+# ---- Load Data ----
+# Reads the shared dataset (S1_Dataset.xlsx) and extracts the Sreemangal block.
+# Run this script from the repository root so the relative path below resolves.
+source("load_station_data.R")
+
+data_file = "S1_Dataset.xlsx"
+D1 = load_station_data(data_file, "Sreemangal")
 dim(D1)
 
 # Time Series Data
